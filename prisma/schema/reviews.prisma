@@ -1,0 +1,12 @@
+model Reviews {
+  reviewId  String   @id @default(uuid()) @db.Uuid
+  requestId String   @unique @db.Uuid
+  review    String
+  rating    Int      @db.SmallInt
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
+
+  rentalRequest RentalRequests @relation(fields: [requestId], references: [requestId])
+
+  @@map("Reviews")
+}

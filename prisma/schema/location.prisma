@@ -1,0 +1,10 @@
+model Location {
+  locationId   String   @id @default(uuid()) @db.Uuid
+  locationName String   @unique @db.VarChar(255)
+  createdAt    DateTime @default(now()) @db.Date
+  updatedAt    DateTime @updatedAt @db.Date
+
+  properties Properties[]
+
+  @@map("location")
+}

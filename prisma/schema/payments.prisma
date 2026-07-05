@@ -1,0 +1,13 @@
+model Payments {
+  paymentId     String          @id @default(uuid()) @db.Uuid
+  requestId     String          @db.Uuid
+  transactionId String?         @unique @db.VarChar(255)
+  amount        Decimal         @db.Decimal(8, 2)
+  status        PaymentStatus   @default(PENDING)
+  paidAt        DateTime?       @db.Date
+  provider      PaymentProvider @default(STRIPE)
+
+  rentalRequest RentalRequests @relation(fields: [requestId], references: [requestId])
+
+  @@map("Payments")
+}

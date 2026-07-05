@@ -1,0 +1,25 @@
+model Properties {
+  propertyId   String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  categoryId   String   @db.Uuid
+  locationId   String   @db.Uuid
+  propertyName String   @db.VarChar(255)
+  price        Decimal  @db.Decimal(8, 2)
+  address      String
+  description  String
+  isAvailable  Boolean  @default(true)
+  amenities    String[] @db.VarChar(255)
+  vacantFrom   DateTime @db.Date
+  images       String[]
+  bedroomCount Int      @db.SmallInt
+  squarefoot   Int
+  createdAt    DateTime @default(now()) @db.Date
+  updatedAt    DateTime @updatedAt @db.Date
+
+  user           Users            @relation(fields: [userId], references: [userId])
+  category       Categories       @relation(fields: [categoryId], references: [categoryId])
+  location       Location         @relation(fields: [locationId], references: [locationId])
+  rentalRequests RentalRequests[]
+
+  @@map("Properties")
+}
