@@ -10,5 +10,7 @@ router.patch("/users/:userId",auth(UserRole.ADMIN),adminController.changeUserSta
 router.get("/properties",auth(UserRole.ADMIN),adminController.getAllProperty)
 router.get("/rentals",auth(UserRole.ADMIN),adminController.getAllRental)
 
+// TODO: Add category 
+
 
 export const adminRoutes = router   

@@ -9,6 +9,7 @@ import { landlordRoutes } from "./modules/landlord/landlord.route";
 import { propertyRoutes } from "./modules/properties/property.route";
 import { requestRoutes } from "./modules/request/request.route";
 import { adminRoutes } from "./modules/admin/admin.route";
+import { notFound } from "./middleware/notFound";
 
 const app: Application = express();
 app.use(cors({
@@ -30,6 +31,7 @@ app.use("/api/properties",propertyRoutes)
 app.use("/api/requests",requestRoutes)
 app.use("/api/admin",adminRoutes)
 
+app.use(notFound);
 app.use(globalErrorHandler);
 
 export default app;

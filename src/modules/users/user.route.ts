@@ -6,4 +6,6 @@ const router = Router()
 
 router.post("/register",userController.registerUser)
 
+// TODO: Update profile 
+
 export const userRoutes = router;
