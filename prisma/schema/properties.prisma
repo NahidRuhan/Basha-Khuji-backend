@@ -21,5 +21,10 @@ model Properties {
   location       Location         @relation(fields: [locationId], references: [locationId])
   rentalRequests RentalRequests[]
 
+  @@index([userId])
+  @@index([categoryId])
+  @@index([locationId])
+  @@index([isAvailable])
+  @@index([price])
   @@map("Properties")
 }

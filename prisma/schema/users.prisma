@@ -11,5 +11,6 @@ model Users {
   properties     Properties[]
   rentalRequests RentalRequests[]
 
+  @@index([role])
   @@map("Users")
 }

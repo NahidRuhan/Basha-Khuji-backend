@@ -11,5 +11,8 @@ model RentalRequests {
   payments Payments[]
   review   Reviews?
 
+  @@index([userId])
+  @@index([propertyId])
+  @@index([status])
   @@map("Rental_Requests")
 }

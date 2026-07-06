@@ -9,5 +9,7 @@ model Payments {
 
   rentalRequest RentalRequests @relation(fields: [requestId], references: [requestId])
 
+  @@index([requestId])
+  @@index([status])
   @@map("Payments")
 }
