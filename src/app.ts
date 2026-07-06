@@ -6,6 +6,7 @@ import { userRoutes } from "./modules/users/user.route";
 import { authRoutes } from "./modules/auth/auth.route";
 import { globalErrorHandler } from "./middleware/globalErrorhandler";
 import { landlordRoutes } from "./modules/landlord/landlord.route";
+import { propertyRoutes } from "./modules/properties/property.route";
 
 const app: Application = express();
 app.use(cors({
@@ -23,6 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/user",userRoutes)
 app.use("/api/auth",authRoutes)
 app.use("/api/landlord",landlordRoutes)
+app.use("/api/properties",propertyRoutes)
 
 app.use(globalErrorHandler);
 
