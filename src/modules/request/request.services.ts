@@ -37,6 +37,32 @@ const createRequest = async (userId:string,payLoad: ICreateRequest) => {
     return createdRequest;
 }
 
+const getAllRequest = async (userId:string) => {
+    const result = await prisma.rentalRequests.findMany({
+        where: {
+            userId
+        },
+        include: {
+            property: true 
+        }
+    })
+    return result
+}
+
+const getRequestById = async (requestId:string) => {
+    const result = await prisma.rentalRequests.findUnique({
+        where: {
+            requestId
+        },
+        include: {
+            property: true
+        }
+    })
+    return result
+}
+
 export const requestService = {
-    createRequest
+    createRequest,
+    getAllRequest,
+    getRequestById
 }
