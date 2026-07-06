@@ -107,6 +107,41 @@ const getAllProperty = async (query: Record<string, unknown>) => {
     };
 };
 
+const getSingleProperty = async (propertyId:string) => {
+
+    const property = await prisma.properties.findUnique({
+        where:{
+            propertyId
+        },
+        include:{
+            category:true,
+            location:true,
+            user:{
+                select:{
+                    userName:true,
+                    email:true,
+                    profileImage:true
+                }
+            }
+        }
+    })
+
+    if(!property){
+        throw new Error("Property not found")
+    }
+
+    return property
+
+}
+
+const getCategory = async () => {
+
+    const categories = await prisma.categories.findMany()
+    return categories
+
+}
 export const propertyService = {
   getAllProperty,
+  getSingleProperty,
+  getCategory
 };

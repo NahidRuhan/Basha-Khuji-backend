@@ -18,6 +18,29 @@ const getAllProperty = catchAsync(async(req:Request,res:Response,next:NextFuncti
     
 })
 
+const getSingleProperty = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+    const {propertyId} = req.params
+    const result = await propertyService.getSingleProperty(propertyId as string)
+    sendResponse(res,{
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Property fetched successfully",
+        data: result
+    })
+})
+
+const getCategory = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+    const result = await propertyService.getCategory()
+    sendResponse(res,{
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Category fetched successfully",
+        data: result
+    })
+})
+
 export const propertyController = {
-    getAllProperty
+    getAllProperty,
+    getSingleProperty,
+    getCategory
 }
