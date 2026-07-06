@@ -7,7 +7,6 @@ const PORT  = config.port
 
 async function main() {
     try {
-
         await prisma.$connect();
         console.log("✅ Database connected")
 

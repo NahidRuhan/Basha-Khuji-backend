@@ -1,12 +1,13 @@
 model Users {
-  userId    String     @id @default(uuid()) @db.Uuid
-  userName  String     @db.VarChar(255)
-  email     String     @unique @db.VarChar(255)
-  password  String     @db.VarChar(255)
-  role      UserRole
-  status    UserStatus @default(ACTIVE)
-  createdAt DateTime   @default(now()) @db.Date
-  updatedAt DateTime   @updatedAt @db.Date
+  userId       String     @id @default(uuid()) @db.Uuid
+  userName     String     @db.VarChar(255)
+  profileImage String?    @db.VarChar(255)
+  email        String     @unique @db.VarChar(255)
+  password     String     @db.VarChar(255)
+  role         UserRole
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now()) @db.Date
+  updatedAt    DateTime   @updatedAt @db.Date
 
   properties     Properties[]
   rentalRequests RentalRequests[]

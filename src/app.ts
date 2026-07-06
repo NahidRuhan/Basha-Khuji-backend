@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import config from "./config";
+import { userRoutes } from "./modules/users/user.route";
 
 const app: Application = express();
 app.use(cors({
@@ -15,5 +16,7 @@ app.use(cookieParser());
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 })
+
+app.use("/api/user",userRoutes)
 
 export default app;
