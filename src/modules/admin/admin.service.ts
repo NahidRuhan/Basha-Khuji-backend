@@ -51,7 +51,7 @@ const getAllRental = async () => {
 const createCategory = async (payLoad: ICreateCategory) => {
     const category = await prisma.categories.findFirst({
         where: {
-            categoryName: payLoad.categoryName
+            categoryName: { equals: payLoad.categoryName, mode: 'insensitive' }
         }
     })
 

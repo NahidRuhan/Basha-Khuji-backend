@@ -70,6 +70,21 @@ const updateProperty = async (userId:string,propertyId:string,payLoad:IUpdatePro
   }
 
   const { categoryName, locationName, propertyName, price, address, description, isAvailable, amenities, vacantFrom, images, bedroomCount, squarefoot } = payLoad;
+
+  if (price !== undefined) {
+    const activeRequests = await prisma.rentalRequests.findFirst({
+      where: {
+        propertyId,
+        status: {
+          in: [RentalRequestStatus.PENDING, RentalRequestStatus.APPROVED, RentalRequestStatus.ACTIVE]
+        }
+      }
+    });
+
+    if (activeRequests) {
+      throw new Error("Cannot update price while there are active or pending rental requests for this property.");
+    }
+  }
   let categoryId: string | undefined = undefined;
   let locationId: string | undefined = undefined;
 
