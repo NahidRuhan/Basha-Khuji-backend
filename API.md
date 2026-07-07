@@ -117,6 +117,26 @@ Cookie: refreshToken=eyJhbGciOiJIUzI...
 - **500 Internal Server Error**: Refresh token is required
 - **500 Internal Server Error**: Invalid refresh token
 
+### 4. Logout User
+
+- **Endpoint**: `/api/auth/logout`
+- **Method**: `POST`
+- **Description**: Logs out the currently authenticated user by clearing the access and refresh token cookies.
+
+**Success Response:**
+
+- **Code:** `200 OK`
+- **Content:**
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "User logged out successfully",
+  "data": null
+}
+```
+
 ### 4. Get Current User
 
 - **Endpoint**: `/api/auth/me`
@@ -481,6 +501,74 @@ Authorization: Bearer <accessToken>
 - **500 Internal Server Error**: Invalid status. Must be one of: PENDING, APPROVED, REJECTED, ACTIVE, COMPLETED
 - **500 Internal Server Error**: Request not found
 - **500 Internal Server Error**: You are not authorized to update this request
+
+### 6. Get My Properties
+
+- **Endpoint**: `/api/landlord/my-properties`
+- **Method**: `GET`
+- **Description**: Retrieves all property listings owned by the currently authenticated landlord.
+- **Headers**:
+  - `Authorization`: `Bearer <accessToken>`
+
+**Success Response:**
+
+- **Code:** `200 OK`
+- **Content:**
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Properties fetched successfully",
+  "data": [
+    {
+      "propertyId": "0df84a02-ea84-49c5-a259-63fc7f19dbcb",
+      "userId": "03ae7e57-541b-44d0-b05d-018206bf05f2",
+      "categoryId": "3b58f032-c151-4d1a-91bf-3f7ce427b137",
+      "locationId": "0258af99-e4ec-400d-98c0-93d706cf0eca",
+      "propertyName": "Beautiful Cabin in Mohakhali #17",
+      "price": "99134",
+      "address": "House 74, Road 20, Mohakhali",
+      "description": "This is a randomly generated description for Beautiful Cabin in Mohakhali #17. It's a wonderful place to live.",
+      "isAvailable": true,
+      "amenities": [
+        "Parking",
+        "Security Guard",
+        "Balcony",
+        "Backup Generator",
+        "CCTV",
+        "Gym"
+      ],
+      "vacantFrom": "2026-10-07T00:00:00.000Z",
+      "images": [
+        "https://picsum.photos/seed/prop17_1/800/600",
+        "https://picsum.photos/seed/prop17_2/800/600"
+      ],
+      "bedroomCount": 1,
+      "squarefoot": 727,
+      "createdAt": "2026-07-07T00:00:00.000Z",
+      "updatedAt": "2026-07-07T00:00:00.000Z",
+      "category": {
+        "categoryId": "3b58f032-c151-4d1a-91bf-3f7ce427b137",
+        "categoryName": "Cabin",
+        "createdAt": "2026-07-07T00:00:00.000Z",
+        "updatedAt": "2026-07-07T00:00:00.000Z"
+      },
+      "location": {
+        "locationId": "0258af99-e4ec-400d-98c0-93d706cf0eca",
+        "locationName": "Mohakhali",
+        "createdAt": "2026-07-07T00:00:00.000Z",
+        "updatedAt": "2026-07-07T00:00:00.000Z"
+      }
+    }
+  ]
+}
+```
+
+**Error Responses:**
+
+- **500 Internal Server Error**: You are not logged in. Please log in to access this resource.
+- **500 Internal Server Error**: Forbidden. You don't have permission to access this resource.
 
 ## Admin APIs
 
