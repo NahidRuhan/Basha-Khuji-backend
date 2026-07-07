@@ -170,6 +170,7 @@ const getAllRequest = async(userId:string)=>{
     },
     include: {
       property: true,
+      review: true,
       user: {
         select: {
           userId: true,
@@ -268,10 +269,25 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
   return updatedRequest
 }
 
+const getMyProperties = async (userId: string) => {
+  const properties = await prisma.properties.findMany({
+    where: {
+      userId: userId
+    },
+    include: {
+      category: true,
+      location: true
+    }
+  });
+
+  return properties;
+}
+
 export const landlordService = {
   createProperty,
   updateProperty,
   deleteProperty,
   getAllRequest,
-  updateRequest
+  updateRequest,
+  getMyProperties
 };

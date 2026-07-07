@@ -77,10 +77,22 @@ const updateRequest = catchAsync(async(req:Request,res:Response,next:NextFunctio
   })
 })
 
+const getMyProperties = catchAsync(async (req:Request,res:Response,next:NextFunction)=>{
+    const userId = req.user?.userId as string
+    const result = await landlordService.getMyProperties(userId)
+    sendResponse(res,{
+      success: true,
+      statusCode: 200,
+      message: "Properties fetched successfully",
+      data: result,
+    })
+})
+
 export const landlordController = {
     createProperty,
     updateProperty,
     deleteProperty,
     getAllRequest,
-    updateRequest
+    updateRequest,
+    getMyProperties
 }

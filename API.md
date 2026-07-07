@@ -1107,12 +1107,11 @@ Authorization: Bearer <accessToken>
   "message": "Payment history fetched successfully",
   "data": [
     {
-       // Payment object with related RentalRequest and Property details
+      // Payment object with related RentalRequest and Property details
     }
   ]
 }
 ```
-
 
 ### 4. Get Payment Details
 
@@ -1131,7 +1130,7 @@ Authorization: Bearer <accessToken>
 - **Code:** 200 OK
 - **Content:**
 
-`json
+```json
 {
   "success": true,
   "statusCode": 200,
@@ -1157,7 +1156,7 @@ Authorization: Bearer <accessToken>
     }
   }
 }
-`
+```
 
 ## Reviews APIs
 
@@ -1203,5 +1202,3 @@ Authorization: Bearer <accessToken>
   }
 }
 ```
-
-
