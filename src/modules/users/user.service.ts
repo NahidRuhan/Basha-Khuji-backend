@@ -1,9 +1,8 @@
 import bcrypt from "bcryptjs"
 import { prisma } from "../../lib/prisma"
 import config from "../../config"
-import { IRegisterUser } from "./user.interface"
+import { IRegisterUser, IUpdate } from "./user.interface"
 import { UserRole } from "../../../generated/prisma/enums"
-
 export const registerUser = async (payLoad:IRegisterUser) => {
 
     const { userName, email, password, role, profileImage } = payLoad
@@ -49,7 +48,35 @@ const getAllUser = async () => {
     return users
 }
 
+const updateProfile = async (userId: string, payLoad: IUpdate) => {
+    const {userName,profileImage,phoneNumber,occupation,address} = payLoad
+
+    const user = await prisma.users.findUnique({
+        where: { userId },
+        select: { userId: true, email: true },
+    });
+
+    if (!user) {
+        throw new Error("User not found!");
+    }
+
+    const updatedUser = await prisma.users.update({
+        where: { userId },
+        data: {
+            userName,
+            profileImage,
+            phoneNumber,
+            occupation,
+            address
+        },
+        omit: { password: true },
+    });
+
+    return updatedUser;
+};
+
 export const userServices = {
     registerUser,
-    getAllUser
+    getAllUser,
+    updateProfile
 }

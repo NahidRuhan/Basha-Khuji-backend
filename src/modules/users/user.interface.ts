@@ -7,3 +7,11 @@ export interface IRegisterUser  {
   password: string;
   role: UserRole;
 };
+
+export interface IUpdate {
+  userName?: string;
+  profileImage?: string | null;
+  phoneNumber?: string | null;
+  occupation?: string | null;
+  address?: string | null;
+}
