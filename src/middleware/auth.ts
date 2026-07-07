@@ -42,7 +42,7 @@ export const auth = (...requiredRoles: UserRole[]) => {
       throw new Error(verifiedToken.error);
     }
 
-    const { email, name, id, role } = verifiedToken.data as JwtPayload;
+    const { userId, role } = verifiedToken.data as JwtPayload;
 
     if (requiredRoles.length && !requiredRoles.includes(role)) {
       throw new Error(
@@ -52,10 +52,7 @@ export const auth = (...requiredRoles: UserRole[]) => {
 
     const user = await prisma.users.findUnique({
       where: {
-        userId:id,
-        email,
-        userName:name,
-        role,
+        userId
       },
     });
 
@@ -68,10 +65,10 @@ export const auth = (...requiredRoles: UserRole[]) => {
     }
 
     req.user = {
-      email,
-      userName:user.userName,
-      userId:user.userId,
-      role:user.role,
+      email: user.email,
+      userName: user.userName,
+      userId: user.userId,
+      role: user.role,
     };
 
     next();
