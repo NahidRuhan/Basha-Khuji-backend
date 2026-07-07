@@ -14,11 +14,15 @@ const loginUser = async (payLoad: ILoginUser) => {
     throw new Error("Email and Password are required");
   }
 
-  const user = await prisma.users.findUniqueOrThrow({
+  const user = await prisma.users.findUnique({
     where: {
       email: email,
     },
   });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   if (user.status === UserStatus.BANNED) {
     throw new Error("Your account has been Banned. Please contact support.");
@@ -65,11 +69,15 @@ const refreshToken = async (token: string) => {
   }
   const { userId } = verifyRefreshToken.data as JwtPayload;
 
-  const user = await prisma.users.findUniqueOrThrow({
+  const user = await prisma.users.findUnique({
     where: {
       userId: userId,
     },
   });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   if (user.status === UserStatus.BANNED) {
     throw new Error("Your account has been Banned. Please contact support.");

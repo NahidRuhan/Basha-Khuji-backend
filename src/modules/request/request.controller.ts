@@ -30,7 +30,8 @@ const getAllRequest = catchAsync(async(req:Request,res:Response,next:NextFunctio
 
 const getRequestById = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
     const requestId = req.params.id as string
-    const result = await requestService.getRequestById(requestId)
+    const userId = req.user?.userId as string
+    const result = await requestService.getRequestById(requestId, userId)
 
     sendResponse(res,{
         success: true,

@@ -17,23 +17,34 @@ const changeUserStatus = async (userId:string,payload:IChangeUserStatus) => {
         throw new Error("User not found");
     }
 
+    if (!payload.status) {
+        throw new Error("Missing required field: status");
+    }
+
+    const validStatuses = ["ACTIVE", "BANNED"];
+    if (!validStatuses.includes(payload.status)) {
+        throw new Error(`Invalid status. Must be one of: ${validStatuses.join(", ")}`);
+    }
+
     const user = await prisma.users.update({
         where:{
             userId
         },
-        data:payload,
+        data: {
+            status: payload.status
+        },
         omit: { password: true }
     })
     return user
 }
 
-const getAllProperty = async () => {
-    const properties = await prisma.properties.findMany();
-    return properties;
-}
 
 const getAllRental = async () => {
-    const rentals = await prisma.rentalRequests.findMany();
+    const rentals = await prisma.rentalRequests.findMany({
+        include: {
+            property: true
+        }
+    });
     return rentals;
 }
 
@@ -58,7 +69,6 @@ const createCategory = async (payLoad: ICreateCategory) => {
 export const adminService = {
     getAllUser,
     changeUserStatus,
-    getAllProperty,
     getAllRental,
     createCategory
 }

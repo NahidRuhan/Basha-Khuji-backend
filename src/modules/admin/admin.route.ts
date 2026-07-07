@@ -7,7 +7,6 @@ const router = Router()
 
 router.get("/users",auth(UserRole.ADMIN),adminController.getAllUser)
 router.patch("/users/:userId",auth(UserRole.ADMIN),adminController.changeUserStatus)
-router.get("/properties",auth(UserRole.ADMIN),adminController.getAllProperty)
 router.get("/rentals",auth(UserRole.ADMIN),adminController.getAllRental)
 router.post("/categories",auth(UserRole.ADMIN),adminController.createCategory)
 

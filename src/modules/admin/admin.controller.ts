@@ -31,16 +31,7 @@ const changeUserStatus = catchAsync(async (req: Request, res: Response, next: Ne
 
 })
 
-const getAllProperty = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const properties = await adminService.getAllProperty()
 
-    sendResponse(res,{
-        success: true,
-        statusCode: 200,
-        message: "Properties fetched successfully!",
-        data: {properties}
-    })
-})
 
 const getAllRental = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const rentals = await adminService.getAllRental()
@@ -67,7 +58,6 @@ const createCategory = catchAsync(async (req: Request, res: Response, next: Next
 export const adminController = {
     getAllUser,
     changeUserStatus,
-    getAllProperty,
     getAllRental,
     createCategory
 }

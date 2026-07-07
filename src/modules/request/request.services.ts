@@ -6,6 +6,10 @@ const createRequest = async (userId:string,payLoad: ICreateRequest) => {
 
     const { propertyId, message } = payLoad;
 
+    if (!propertyId || !message) {
+        throw new Error("Missing required fields: propertyId and message are required");
+    }
+
     const property = await prisma.properties.findUnique({
         where: { propertyId }
     });
@@ -49,15 +53,21 @@ const getAllRequest = async (userId:string) => {
     return result
 }
 
-const getRequestById = async (requestId:string) => {
-    const result = await prisma.rentalRequests.findUnique({
+const getRequestById = async (requestId:string, userId:string) => {
+    const result = await prisma.rentalRequests.findFirst({
         where: {
-            requestId
+            requestId,
+            userId
         },
         include: {
             property: true
         }
     })
+
+    if (!result) {
+        throw new Error("Request not found");
+    }
+
     return result
 }
 
