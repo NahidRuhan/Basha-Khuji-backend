@@ -202,6 +202,17 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
     }
   })
 
+  if(payLoad.status == RentalRequestStatus.APPROVED || payLoad.status == RentalRequestStatus.ACTIVE || payLoad.status == RentalRequestStatus.COMPLETED ){
+    await prisma.properties.update({
+      where:{
+        propertyId: request.propertyId
+      },
+      data:{
+        isAvailable: false
+      }
+    })
+  }
+
   return updatedRequest
 }
 
