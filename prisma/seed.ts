@@ -1,3 +1,13 @@
+/**
+ * Prisma Database Seed Script
+ * 
+ * This script is used to populate the database with initial mock data.
+ * It creates categories, locations, users (landlords and tenants), 
+ * properties, and rental requests to provide a rich starting environment 
+ * for development and testing.
+ * 
+ * Usage: npx prisma db seed
+ */
 import { prisma } from '../src/lib/prisma';
 import bcrypt from 'bcryptjs';
 
@@ -63,17 +73,41 @@ const amenitiesList = [
   "Heating", "Security Guard", "CCTV", "Elevator", "Backup Generator"
 ];
 
+/**
+ * Returns a random subset of items from an array.
+ * 
+ * @param array - The source array to pick items from.
+ * @param count - The number of random items to pick.
+ * @returns A new array containing the randomly selected items.
+ */
 function getRandomItems(array: string[], count: number) {
   const shuffled = [...array].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }
 
+/**
+ * Generates a random integer between the min and max values (inclusive).
+ * 
+ * @param min - The minimum possible integer.
+ * @param max - The maximum possible integer.
+ * @returns A random integer within the specified range.
+ */
 function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * Main seeding function that orchestrates the creation of all mock data.
+ * It strictly follows a relational dependency order:
+ * 1. Categories & Locations (No dependencies)
+ * 2. Landlords (Independent users)
+ * 3. Properties (Depends on Landlords, Categories, and Locations)
+ * 4. Tenants (Independent users)
+ * 5. Rental Requests (Depends on Tenants and Properties)
+ */
 async function main() {
   console.log("Seeding categories...");
+  // Upsert is used to prevent duplicate key errors if the seed is run multiple times
   const categoryRecords = [];
   for (const category of categories) {
     const record = await prisma.categories.upsert({
@@ -116,6 +150,10 @@ async function main() {
   }
   console.log("Landlords seeded successfully! (Passwords are all: password123)");
 
+  // ---------------------------------------------------------
+  // 3. SEED PROPERTIES
+  // Properties require a landlord, a category, and a location.
+  // ---------------------------------------------------------
   console.log("Seeding 50 Properties...");
   const propertyRecords = [];
   for (let i = 1; i <= 50; i++) {
@@ -150,6 +188,10 @@ async function main() {
   }
   console.log("50 Properties seeded successfully!");
 
+  // ---------------------------------------------------------
+  // 4. SEED TENANT USERS
+  // Create users who will act as renters/applicants.
+  // ---------------------------------------------------------
   console.log("Seeding 25 Tenants...");
   const tenantRecords = [];
   for (let i = 1; i <= 25; i++) {
@@ -168,6 +210,10 @@ async function main() {
   }
   console.log("Tenants seeded successfully! (Passwords are all: password123)");
 
+  // ---------------------------------------------------------
+  // 5. SEED RENTAL REQUESTS
+  // Randomly assign tenants to properties to simulate activity.
+  // ---------------------------------------------------------
   console.log("Seeding 40 Rental Requests...");
   for (let i = 1; i <= 40; i++) {
     const randomTenant = tenantRecords[getRandomInt(0, tenantRecords.length - 1)]!;

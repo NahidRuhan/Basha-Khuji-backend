@@ -91,20 +91,21 @@ const confirmPayment = async (userId: string, transactionId: string) => {
         throw new Error(`Payment is not successful. Current status: ${session.payment_status}`);
     }
 
-    const updatedPayment = await prisma.payments.update({
-        where: { transactionId },
-        data: {
-            status: PaymentStatus.COMPLETED,
-            paidAt: new Date()
-        }
-    });
-
-    await prisma.rentalRequests.update({
-        where: { requestId: payment.requestId },
-        data: {
-            status: RentalRequestStatus.ACTIVE
-        }
-    });
+    const [updatedPayment] = await prisma.$transaction([
+        prisma.payments.update({
+            where: { transactionId },
+            data: {
+                status: PaymentStatus.COMPLETED,
+                paidAt: new Date()
+            }
+        }),
+        prisma.rentalRequests.update({
+            where: { requestId: payment.requestId },
+            data: {
+                status: RentalRequestStatus.ACTIVE
+            }
+        })
+    ]);
 
     return updatedPayment;
 };

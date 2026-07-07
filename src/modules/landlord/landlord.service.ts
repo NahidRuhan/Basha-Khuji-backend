@@ -223,50 +223,47 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
     }
   }
 
-  const updatedRequest = await prisma.rentalRequests.update({
-    where:{
-      requestId
-    },
-    data:{
-      status: payLoad.status
-    }
-  })
+  const transactionOperations: any[] = [];
 
-  if(payLoad.status == RentalRequestStatus.APPROVED || payLoad.status == RentalRequestStatus.ACTIVE ){
-    await prisma.properties.update({
-      where:{
-        propertyId: request.propertyId
-      },
-      data:{
-        isAvailable: false
-      }
+  transactionOperations.push(
+    prisma.rentalRequests.update({
+      where: { requestId },
+      data: { status: payLoad.status }
     })
+  );
+
+  if (payLoad.status == RentalRequestStatus.APPROVED || payLoad.status == RentalRequestStatus.ACTIVE) {
+    transactionOperations.push(
+      prisma.properties.update({
+        where: { propertyId: request.propertyId },
+        data: { isAvailable: false }
+      })
+    );
 
     if (payLoad.status === RentalRequestStatus.APPROVED) {
-      // Reject all other pending requests for this property
-      await prisma.rentalRequests.updateMany({
-        where: {
-          propertyId: request.propertyId,
-          status: RentalRequestStatus.PENDING,
-          requestId: { not: requestId }
-        },
-        data: {
-          status: RentalRequestStatus.REJECTED
-        }
-      });
+      transactionOperations.push(
+        prisma.rentalRequests.updateMany({
+          where: {
+            propertyId: request.propertyId,
+            status: RentalRequestStatus.PENDING,
+            requestId: { not: requestId }
+          },
+          data: { status: RentalRequestStatus.REJECTED }
+        })
+      );
     }
   } else if (payLoad.status == RentalRequestStatus.COMPLETED || payLoad.status == RentalRequestStatus.REJECTED) {
-    await prisma.properties.update({
-      where:{
-        propertyId: request.propertyId
-      },
-      data:{
-        isAvailable: true
-      }
-    })
+    transactionOperations.push(
+      prisma.properties.update({
+        where: { propertyId: request.propertyId },
+        data: { isAvailable: true }
+      })
+    );
   }
 
-  return updatedRequest
+  const [updatedRequest] = await prisma.$transaction(transactionOperations);
+
+  return updatedRequest;
 }
 
 const getMyProperties = async (userId: string) => {
