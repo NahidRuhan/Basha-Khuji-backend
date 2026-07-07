@@ -10,6 +10,7 @@ const getAllProperty = async (query: Record<string, unknown>) => {
         minBedrooms,
         minSquarefoot,
         maxSquarefoot,
+        isAvailable,
         sortBy,
         sortOrder,
         page,
@@ -17,6 +18,9 @@ const getAllProperty = async (query: Record<string, unknown>) => {
     } = query;
 
     const queryConditions: any[] = [];
+
+    const availableStatus = isAvailable !== undefined ? (isAvailable === 'true' || isAvailable === true) : true;
+    queryConditions.push({ isAvailable: availableStatus });
 
     // 1. Partial Search (including amenities as an exact match in the array)
     if (searchTerm) {

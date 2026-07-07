@@ -193,6 +193,15 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
     throw new Error(`Invalid status. Must be one of: ${validStatuses.join(", ")}`);
   }
 
+  if (
+    (payLoad.status === RentalRequestStatus.APPROVED || payLoad.status === RentalRequestStatus.ACTIVE) && 
+    request.status === RentalRequestStatus.PENDING
+  ) {
+    if (!request.property.isAvailable) {
+      throw new Error("Cannot approve request. Property is already rented out.");
+    }
+  }
+
   const updatedRequest = await prisma.rentalRequests.update({
     where:{
       requestId
@@ -211,6 +220,20 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
         isAvailable: false
       }
     })
+
+    if (payLoad.status === RentalRequestStatus.APPROVED) {
+      // Reject all other pending requests for this property
+      await prisma.rentalRequests.updateMany({
+        where: {
+          propertyId: request.propertyId,
+          status: RentalRequestStatus.PENDING,
+          requestId: { not: requestId }
+        },
+        data: {
+          status: RentalRequestStatus.REJECTED
+        }
+      });
+    }
   }
 
   return updatedRequest

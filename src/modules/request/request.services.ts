@@ -18,16 +18,22 @@ const createRequest = async (userId:string,payLoad: ICreateRequest) => {
         throw new Error("Property not found");
     }
 
+    if (!property.isAvailable) {
+        throw new Error("Property is no longer available for rent");
+    }
+
     const existingRequest = await prisma.rentalRequests.findFirst({
         where: {
             propertyId,
             userId,
-            status: RentalRequestStatus.PENDING
+            status: {
+                in: [RentalRequestStatus.PENDING, RentalRequestStatus.APPROVED, RentalRequestStatus.ACTIVE]
+            }
         }
     });
 
     if (existingRequest) {
-        throw new Error("You already have a pending request for this property");
+        throw new Error(`You already have a ${existingRequest.status.toLowerCase()} request for this property`);
     }
 
     const createdRequest = await prisma.rentalRequests.create({
