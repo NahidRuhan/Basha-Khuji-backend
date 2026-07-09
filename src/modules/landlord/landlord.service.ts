@@ -10,6 +10,12 @@ const createProperty = async (userId: string, payLoad: ICreateProperty) => {
     }
   }
 
+  const allowedKeys = [...requiredFields, 'isAvailable'];
+  const invalidKeys = Object.keys(payLoad).filter(key => !allowedKeys.includes(key));
+  if (invalidKeys.length > 0) {
+    throw new Error(`Invalid fields in payload: ${invalidKeys.join(', ')}`);
+  }
+
   const { categoryName, locationName, ...restPayload } = payLoad;
 
   const category = await prisma.categories.findUnique({
@@ -54,6 +60,17 @@ const createProperty = async (userId: string, payLoad: ICreateProperty) => {
 };
 
 const updateProperty = async (userId:string,propertyId:string,payLoad:IUpdateProperty)=>{
+
+  const allowedKeys = [
+    'categoryName', 'locationName', 'propertyName', 'price', 
+    'address', 'description', 'isAvailable', 'amenities', 
+    'vacantFrom', 'images', 'bedroomCount', 'squarefoot'
+  ];
+
+  const invalidKeys = Object.keys(payLoad).filter(key => !allowedKeys.includes(key));
+  if (invalidKeys.length > 0) {
+    throw new Error(`Invalid fields in payload: ${invalidKeys.join(', ')}`);
+  }
 
   const property = await prisma.properties.findUnique({
     where:{
