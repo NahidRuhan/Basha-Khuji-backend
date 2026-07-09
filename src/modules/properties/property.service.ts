@@ -21,6 +21,7 @@ const getAllProperty = async (query: Record<string, unknown>) => {
 
     const availableStatus = isAvailable !== undefined ? (isAvailable === 'true' || isAvailable === true) : true;
     queryConditions.push({ isAvailable: availableStatus });
+    queryConditions.push({ isArchived: false });
 
     // 1. Partial Search (including amenities as an exact match in the array)
     if (searchTerm) {
@@ -113,9 +114,10 @@ const getAllProperty = async (query: Record<string, unknown>) => {
 
 const getSingleProperty = async (propertyId:string) => {
 
-    const property = await prisma.properties.findUnique({
+    const property = await prisma.properties.findFirst({
         where:{
-            propertyId
+            propertyId,
+            isArchived: false
         },
         include:{
             category:true,

@@ -252,7 +252,7 @@
         {
           "name": "Remove Listing",
           "request": {
-            "method": "DELETE",
+            "method": "PATCH",
             "header": [],
             "url": {
               "raw": "http://localhost:8000/api/landlord/properties/314d68a5-094c-4c20-9904-e09384c0dc1e",

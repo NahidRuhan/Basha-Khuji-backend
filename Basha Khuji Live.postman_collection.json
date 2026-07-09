@@ -260,7 +260,7 @@
         {
           "name": "Remove Listing",
           "request": {
-            "method": "DELETE",
+            "method": "PATCH",
             "header": [],
             "url": {
               "raw": "https://basha-khuji-backend.vercel.app/api/landlord/properties/0964f8b5-0130-4d7e-af8d-fd41f3e349da",

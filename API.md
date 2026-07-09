@@ -352,11 +352,11 @@ Authorization: Bearer <accessToken>
 - **500 Internal Server Error**: You are not authorized to update this property
 - **500 Internal Server Error**: Category not found / Location not found
 
-### 3. Delete Property
+### 3. Archive / Delete Property
 
 - **Endpoint**: `/api/landlord/properties/:propertyId`
-- **Method**: `DELETE`
-- **Description**: Deletes an existing property. Accessible only to the landlord who owns the property. Fails if there are active rental requests associated with the property.
+- **Method**: `PATCH`
+- **Description**: Soft-deletes (archives) an existing property. Accessible only to the landlord who owns the property. Fails if there are active rental requests associated with the property. The property will no longer appear in public searches or landlord listings, but its historical data remains preserved.
 
 **Request Headers:**
 

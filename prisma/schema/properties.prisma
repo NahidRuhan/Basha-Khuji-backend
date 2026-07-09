@@ -8,6 +8,7 @@ model Properties {
   address      String
   description  String
   isAvailable  Boolean  @default(true)
+  isArchived   Boolean  @default(false)
   amenities    String[] @db.VarChar(255)
   vacantFrom   DateTime @db.Date
   images       String[]

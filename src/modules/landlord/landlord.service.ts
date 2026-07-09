@@ -169,9 +169,12 @@ const deleteProperty = async (userId:string,propertyId:string)=>{
     throw new Error("Cannot delete property that has approved or active rental requests. Please resolve them first.");
   }
 
-  const deletedProperty = await prisma.properties.delete({
+  const deletedProperty = await prisma.properties.update({
     where:{
       propertyId
+    },
+    data: {
+      isArchived: true
     }
   })
 
@@ -286,7 +289,8 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
 const getMyProperties = async (userId: string) => {
   const properties = await prisma.properties.findMany({
     where: {
-      userId: userId
+      userId: userId,
+      isArchived: false
     },
     include: {
       category: true,
