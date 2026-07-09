@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
+    res.send("This is Basha Khuji REST-API");
 })
 
 app.use("/api/user",userRoutes)
