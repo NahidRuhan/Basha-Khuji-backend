@@ -28,7 +28,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("This is Basha Khuji REST-API");
+    res.status(200).json({
+        success: true,
+        message: "Welcome to the Basha Khuji API",
+        version: "1.0.0",
+        endpoints: {
+            users: "/api/user",
+            auth: "/api/auth",
+            landlord: "/api/landlord",
+            properties: "/api/properties",
+            requests: "/api/requests",
+            admin: "/api/admin",
+            payments: "/api/payments",
+            reviews: "/api/reviews"
+        }
+    });
 })
 
 app.use("/api/user",userRoutes)
