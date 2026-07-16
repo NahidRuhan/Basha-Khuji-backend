@@ -51,6 +51,22 @@ Basha Khuji is a robust backend API for a rental property marketplace. Landlords
 - **Payments**: Tracks secure Stripe payment transactions, amounts, and statuses linked to approved rentals.
 - **Reviews**: Tenant reviews and ratings for properties after a completed lease.
 
+  ## 📦 Dependencies
+
+The backend server relies on a robust ecosystem of Node.js libraries, TypeScript, and Prisma ORM.
+
+### Core Dependencies
+- **Core Framework & Utils:** `express` (^5.2.1), `dotenv` (^17.4.2), `http-status` (^2.1.0)
+- **Database & ORM:** `@prisma/client` (^7.8.0), `@prisma/adapter-pg` (^7.8.0), `pg` (^8.22.0)
+- **Security & Middleware:** `cors` (^2.8.6), `bcryptjs` (^3.0.3), `jsonwebtoken` (^9.0.3), `cookie-parser` (^1.4.7)
+- **Payments:** `stripe` (^22.3.0)
+- **Type Definitions:** `@types/express` (^5.0.6), `@types/cors` (^2.8.19), `@types/jsonwebtoken` (^9.0.10), `@types/cookie-parser` (^1.4.10)
+
+### Development Dependencies
+- **TypeScript & Execution:** `typescript` (^6.0.3), `tsx` (^4.23.0)
+- **Database Tooling:** `prisma` (^7.8.0)
+- **Type Definitions:** `@types/node` (^26.1.0), `@types/bcryptjs` (^2.4.6), `@types/pg` (^8.20.0)
+
 ## 📚 API Documentation
 
 Below is a summary of the available endpoints. For full documentation including request bodies, headers, and exact JSON response formats, please see the **[Full API Documentation](./API.md)**.
