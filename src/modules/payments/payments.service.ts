@@ -27,7 +27,9 @@ const createPayment = async (userId: string, requestId: string) => {
         throw new Error("Payment already completed for this request");
     }
 
-    const amount = Number(request.property.price);
+    const rentAmount = Number(request.property.price);
+    const securityDeposit = rentAmount; // Security deposit is 1 month's rent
+    const totalAmount = rentAmount + securityDeposit;
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -36,12 +38,23 @@ const createPayment = async (userId: string, requestId: string) => {
                 price_data: {
                     currency: 'bdt',
                     product_data: {
-                        name: request.property.propertyName,
+                        name: `First Month's Rent: ${request.property.propertyName}`,
                     },
-                    unit_amount: Math.round(amount * 100),
+                    unit_amount: Math.round(rentAmount * 100),
                 },
                 quantity: 1,
             },
+            {
+                price_data: {
+                    currency: 'bdt',
+                    product_data: {
+                        name: 'Security Deposit (Refundable)',
+                        description: 'Equivalent to 1 month rent'
+                    },
+                    unit_amount: Math.round(securityDeposit * 100),
+                },
+                quantity: 1,
+            }
         ],
         mode: 'payment',
         success_url: `${config.app_url || 'http://localhost:3000'}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
@@ -55,7 +68,7 @@ const createPayment = async (userId: string, requestId: string) => {
         data: {
             requestId,
             transactionId: session.id,
-            amount: amount,
+            amount: totalAmount,
             status: PaymentStatus.PENDING
         }
     });
