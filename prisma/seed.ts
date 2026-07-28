@@ -24,7 +24,7 @@ async function main() {
     throw new Error("Could not find JSON block in seed.md");
   }
   
-  const data = JSON.parse(jsonMatch[1]);
+  const data = JSON.parse(jsonMatch[1]!);
   
   // 1. Categories
   console.log("Seeding categories...");
@@ -89,8 +89,8 @@ async function main() {
       const propData = data.properties[propertyIndex];
       
       // Pick random category and location for the property if not specified
-      const randomCategory = categoryRecords[Math.floor(Math.random() * categoryRecords.length)];
-      const randomLocation = locationRecords[Math.floor(Math.random() * locationRecords.length)];
+      const randomCategory = categoryRecords[Math.floor(Math.random() * categoryRecords.length)]!;
+      const randomLocation = locationRecords[Math.floor(Math.random() * locationRecords.length)]!;
       
       const record = await prisma.properties.create({
         data: {
