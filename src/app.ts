@@ -17,7 +17,22 @@ import { paymentsController } from "./modules/payments/payments.controller";
 
 const app: Application = express();
 app.use(cors({
-    origin: config.app_url,
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            config.app_url,
+            "http://localhost:3000",
+        ].filter(Boolean);
+        
+        // Allow requests with no origin (mobile apps, Postman, server-to-server)
+        if (!origin) return callback(null, true);
+        
+        // Allow configured origins and Vercel preview deployments
+        if (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+            return callback(null, true);
+        }
+        
+        callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
 }));
 
