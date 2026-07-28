@@ -14,6 +14,10 @@ declare global {
         userName: string;
         userId: string;
         role: UserRole;
+        phoneNumber?: string | null;
+        address?: string | null;
+        occupation?: string | null;
+        profileImage?: string | null;
       };
     }
   }
@@ -69,6 +73,10 @@ export const auth = (...requiredRoles: UserRole[]) => {
       userName: user.userName,
       userId: user.userId,
       role: user.role,
+      phoneNumber: user.phoneNumber,
+      address: user.address,
+      occupation: user.occupation,
+      profileImage: user.profileImage,
     };
 
     next();
