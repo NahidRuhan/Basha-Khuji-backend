@@ -1026,7 +1026,34 @@ Authorization: Bearer <accessToken>
 }
 ```
 
-### 3. Get Single Property
+### 3. Get All Locations
+
+- **Endpoint**: `/api/properties/location`
+- **Method**: `GET`
+- **Description**: Retrieves a list of all available property locations. Typically used for populating dropdowns on the frontend.
+
+**Success Response:**
+
+- **Code:** `200 OK`
+- **Content:**
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Location fetched successfully",
+  "data": [
+    {
+      "locationId": "48e70093-7c46-44ad-ab76-c0e39411cb8f",
+      "locationName": "Downtown",
+      "createdAt": "2026-07-06T00:00:00.000Z",
+      "updatedAt": "2026-07-06T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+### 4. Get Single Property
 
 - **Endpoint**: `/api/properties/:propertyId`
 - **Method**: `GET`

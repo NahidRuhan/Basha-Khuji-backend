@@ -86,6 +86,7 @@ Below is a summary of the available endpoints. For full documentation including 
 |---|---|---|
 | `GET`  | `/api/properties` | Get all properties (with filters) |
 | `GET`  | `/api/properties/category` | Get all property categories |
+| `GET`  | `/api/properties/location` | Get all property locations |
 | `GET`  | `/api/properties/:propertyId` | Get property details |
 
 ### 🔑 Landlord Features
