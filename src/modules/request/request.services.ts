@@ -53,7 +53,8 @@ const getAllRequest = async (userId:string) => {
             userId
         },
         include: {
-            property: true 
+            property: true,
+            review: true
         }
     })
     return result
@@ -66,7 +67,8 @@ const getRequestById = async (requestId:string, userId:string) => {
             userId
         },
         include: {
-            property: true
+            property: true,
+            review: true
         }
     })
 

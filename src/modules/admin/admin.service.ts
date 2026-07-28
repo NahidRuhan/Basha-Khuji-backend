@@ -43,6 +43,7 @@ const getAllRental = async () => {
     const rentals = await prisma.rentalRequests.findMany({
         include: {
             property: true,
+            review: true,
             user: {
                 omit: { password: true }
             }
