@@ -42,7 +42,10 @@ const changeUserStatus = async (userId:string,payload:IChangeUserStatus) => {
 const getAllRental = async () => {
     const rentals = await prisma.rentalRequests.findMany({
         include: {
-            property: true
+            property: true,
+            user: {
+                omit: { password: true }
+            }
         }
     });
     return rentals;
