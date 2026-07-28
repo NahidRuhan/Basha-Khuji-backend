@@ -76,25 +76,19 @@ async function main() {
     if (user.role === 'TENANT') tenantRecords.push(record);
   }
 
-  // 4. Properties (3 per landlord)
+  // 4. Properties
   console.log("Seeding properties...");
   const propertyRecords = [];
-  let propertyIndex = 0;
   
-  for (const landlord of landlordRecords) {
-    // Give each landlord exactly 3 properties from the JSON array
-    for (let i = 0; i < 3; i++) {
-      if (propertyIndex >= data.properties.length) break;
-      
-      const propData = data.properties[propertyIndex];
-      
-      // Pick random category and location for the property if not specified
+  for (const propData of data.properties) {
+      // Pick random category, location, and landlord for the property
       const randomCategory = categoryRecords[Math.floor(Math.random() * categoryRecords.length)]!;
       const randomLocation = locationRecords[Math.floor(Math.random() * locationRecords.length)]!;
+      const randomLandlord = landlordRecords[Math.floor(Math.random() * landlordRecords.length)]!;
       
       const record = await prisma.properties.create({
         data: {
-          userId: landlord.userId,
+          userId: randomLandlord.userId,
           categoryId: randomCategory.categoryId,
           locationId: randomLocation.locationId,
           propertyName: propData.title,
@@ -111,8 +105,6 @@ async function main() {
       });
       
       propertyRecords.push(record);
-      propertyIndex++;
-    }
   }
 
   // 5. Rental Requests
