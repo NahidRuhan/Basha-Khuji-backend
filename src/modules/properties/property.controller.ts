@@ -39,8 +39,19 @@ const getCategory = catchAsync(async(req:Request,res:Response,next:NextFunction)
     })
 })
 
+const getLocation = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+    const result = await propertyService.getLocation()
+    sendResponse(res,{
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Location fetched successfully",
+        data: result
+    })
+})
+
 export const propertyController = {
     getAllProperty,
     getSingleProperty,
-    getCategory
+    getCategory,
+    getLocation
 }

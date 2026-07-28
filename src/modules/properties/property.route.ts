@@ -5,6 +5,7 @@ const router = Router()
 
 router.get("/", propertyController.getAllProperty)
 router.get("/category", propertyController.getCategory)
+router.get("/location", propertyController.getLocation)
 router.get("/:propertyId", propertyController.getSingleProperty)
 
 export const propertyRoutes = router

@@ -146,8 +146,15 @@ const getCategory = async () => {
     return categories
 
 }
+
+const getLocation = async () => {
+    const locations = await prisma.location.findMany()
+    return locations
+}
+
 export const propertyService = {
   getAllProperty,
   getSingleProperty,
-  getCategory
+  getCategory,
+  getLocation
 };
