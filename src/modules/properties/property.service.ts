@@ -126,6 +126,9 @@ const getSingleProperty = async (propertyId:string) => {
                 select:{
                     userName:true,
                     email:true,
+                    phoneNumber:true,
+                    occupation:true,
+                    address:true,
                     profileImage:true
                 }
             }
