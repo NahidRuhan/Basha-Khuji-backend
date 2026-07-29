@@ -235,15 +235,6 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
     throw new Error(`Invalid status. Must be one of: ${validStatuses.join(", ")}`);
   }
 
-  if (
-    (payLoad.status === RentalRequestStatus.APPROVED || payLoad.status === RentalRequestStatus.ACTIVE) && 
-    request.status === RentalRequestStatus.PENDING
-  ) {
-    if (!request.property.isAvailable) {
-      throw new Error("Cannot approve request. Property is already rented out.");
-    }
-  }
-
   const transactionOperations: any[] = [];
 
   transactionOperations.push(
@@ -253,33 +244,43 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
     })
   );
 
-  if (payLoad.status == RentalRequestStatus.APPROVED || payLoad.status == RentalRequestStatus.ACTIVE) {
-    transactionOperations.push(
-      prisma.properties.update({
-        where: { propertyId: request.propertyId },
-        data: { isAvailable: false }
-      })
-    );
+  if (payLoad.status === RentalRequestStatus.APPROVED || payLoad.status === RentalRequestStatus.ACTIVE) {
+    // If moving from a non-holding state to a holding state, check availability
+    if (request.status !== RentalRequestStatus.APPROVED && request.status !== RentalRequestStatus.ACTIVE) {
+      if (!request.property.isAvailable) {
+        throw new Error("Cannot approve request. Property is already rented out.");
+      }
 
-    if (payLoad.status === RentalRequestStatus.APPROVED) {
       transactionOperations.push(
-        prisma.rentalRequests.updateMany({
-          where: {
-            propertyId: request.propertyId,
-            status: RentalRequestStatus.PENDING,
-            requestId: { not: requestId }
-          },
-          data: { status: RentalRequestStatus.REJECTED }
+        prisma.properties.update({
+          where: { propertyId: request.propertyId },
+          data: { isAvailable: false }
+        })
+      );
+
+      if (payLoad.status === RentalRequestStatus.APPROVED) {
+        transactionOperations.push(
+          prisma.rentalRequests.updateMany({
+            where: {
+              propertyId: request.propertyId,
+              status: RentalRequestStatus.PENDING,
+              requestId: { not: requestId }
+            },
+            data: { status: RentalRequestStatus.REJECTED }
+          })
+        );
+      }
+    }
+  } else if (payLoad.status === RentalRequestStatus.COMPLETED || payLoad.status === RentalRequestStatus.REJECTED) {
+    // Only mark property as available if this request was previously holding it
+    if (request.status === RentalRequestStatus.APPROVED || request.status === RentalRequestStatus.ACTIVE) {
+      transactionOperations.push(
+        prisma.properties.update({
+          where: { propertyId: request.propertyId },
+          data: { isAvailable: true }
         })
       );
     }
-  } else if (payLoad.status == RentalRequestStatus.COMPLETED || payLoad.status == RentalRequestStatus.REJECTED) {
-    transactionOperations.push(
-      prisma.properties.update({
-        where: { propertyId: request.propertyId },
-        data: { isAvailable: true }
-      })
-    );
   }
 
   const [updatedRequest] = await prisma.$transaction(transactionOperations);
