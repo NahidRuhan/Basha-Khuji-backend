@@ -98,6 +98,7 @@ Below is a summary of the available endpoints. For full documentation including 
 | `GET`  | `/api/landlord/my-properties` | Get landlord's own properties |
 | `GET`  | `/api/landlord/requests` | Get requests for landlord's properties |
 | `PATCH`| `/api/landlord/requests/:id` | Approve or reject a request |
+| `GET`  | `/api/landlord/tenant-history/:userId` | Get global request history for a tenant |
 
 ### 👤 Tenant Features
 | Method | Endpoint | Description |
@@ -111,6 +112,7 @@ Below is a summary of the available endpoints. For full documentation including 
 | Method | Endpoint | Description |
 |---|---|---|
 | `POST` | `/api/payments/create` | Create a Stripe checkout session |
+| `POST` | `/api/payments/confirm` | Confirm payment success after Stripe checkout |
 | `GET`  | `/api/payments` | Get user's payment history |
 | `GET`  | `/api/payments/:id` | Get payment details |
 | `POST` | `/api/payments/webhook` | Stripe webhook for payment confirmation |

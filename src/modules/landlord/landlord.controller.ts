@@ -88,11 +88,23 @@ const getMyProperties = catchAsync(async (req:Request,res:Response,next:NextFunc
     })
 })
 
+const getTenantHistory = catchAsync(async (req:Request,res:Response,next:NextFunction)=>{
+    const userId = req.params.userId as string;
+    const result = await landlordService.getTenantHistory(userId);
+    sendResponse(res,{
+      success: true,
+      statusCode: 200,
+      message: "Tenant history fetched successfully",
+      data: result,
+    })
+})
+
 export const landlordController = {
     createProperty,
     updateProperty,
     deleteProperty,
     getAllRequest,
     updateRequest,
-    getMyProperties
+    getMyProperties,
+    getTenantHistory
 }

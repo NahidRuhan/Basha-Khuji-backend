@@ -570,6 +570,33 @@ Authorization: Bearer <accessToken>
 - **500 Internal Server Error**: You are not logged in. Please log in to access this resource.
 - **500 Internal Server Error**: Forbidden. You don't have permission to access this resource.
 
+### 7. Get Tenant History
+
+- **Endpoint**: `/api/landlord/tenant-history/:userId`
+- **Method**: `GET`
+- **Description**: Retrieves the global request history for a specific tenant across the entire platform. Accessible only to landlords.
+- **Headers**:
+  - `Authorization`: `Bearer <accessToken>`
+
+**Success Response:**
+
+- **Code:** `200 OK`
+- **Content:**
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Tenant history fetched successfully",
+  "data": []
+}
+```
+
+**Error Responses:**
+
+- **500 Internal Server Error**: You are not logged in.
+- **500 Internal Server Error**: Forbidden. You don't have permission to access this resource.
+
 ## Admin APIs
 
 ### 1. Get All Users
@@ -1156,7 +1183,36 @@ Authorization: Bearer <accessToken>
 - **500 Internal Server Error**: Rental request not found / must be APPROVED
 - **500 Internal Server Error**: Payment already completed
 
-### 2. Get Payment History
+### 2. Confirm Payment
+
+- **Endpoint**: `/api/payments/confirm`
+- **Method**: `POST`
+- **Description**: Confirms the success of a payment after Stripe checkout session completes.
+- **Headers**:
+  - `Authorization`: `Bearer <accessToken>`
+
+**Request Body:**
+
+```json
+{
+  "sessionId": "cs_test_..."
+}
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+- **Content:**
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Payment confirmed successfully"
+}
+```
+
+### 3. Get Payment History
 
 - **Endpoint**: `/api/payments`
 - **Method**: `GET`
