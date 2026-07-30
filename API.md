@@ -1183,34 +1183,6 @@ Authorization: Bearer <accessToken>
 - **500 Internal Server Error**: Rental request not found / must be APPROVED
 - **500 Internal Server Error**: Payment already completed
 
-### 2. Confirm Payment
-
-- **Endpoint**: `/api/payments/confirm`
-- **Method**: `POST`
-- **Description**: Confirms the success of a payment after Stripe checkout session completes.
-- **Headers**:
-  - `Authorization`: `Bearer <accessToken>`
-
-**Request Body:**
-
-```json
-{
-  "sessionId": "cs_test_..."
-}
-```
-
-**Success Response:**
-
-- **Code:** `200 OK`
-- **Content:**
-
-```json
-{
-  "success": true,
-  "statusCode": 200,
-  "message": "Payment confirmed successfully"
-}
-```
 
 ### 3. Get Payment History
 
@@ -1242,50 +1214,7 @@ Authorization: Bearer <accessToken>
 }
 ```
 
-### 3. Get Payment Details
 
-- **Endpoint**: /api/payments/:id
-- **Method**: GET
-- **Description**: Retrieves detailed information for a specific payment by its ID, including the associated rental request and property details. Accessible to TENANT.
-
-**Request Headers:**
-
-`	ext
-Authorization: Bearer <accessToken>
-`
-
-**Success Response:**
-
-- **Code:** 200 OK
-- **Content:**
-
-```json
-{
-  "success": true,
-  "statusCode": 200,
-  "message": "Payment details fetched successfully",
-  "data": {
-    "paymentId": "547a4ffa-6ce5-4593-ba58-41d3fd1873af",
-    "requestId": "8e14e8d3-952c-4b51-bcc5-f0e6a0990712",
-    "transactionId": "cs_test_a1UZ4fY...",
-    "amount": "75861",
-    "status": "COMPLETED",
-    "paidAt": "2026-07-07T10:00:00.000Z",
-    "provider": "STRIPE",
-    "rentalRequest": {
-      "requestId": "8e14e8d3-952c-4b51-bcc5-f0e6a0990712",
-      "userId": "721d970e-0db5-4558-961f-64637ff562e7",
-      "propertyId": "1aa97d7d-7ae0-4cf3-a6da-c42a68175c99",
-      "status": "ACTIVE",
-      "property": {
-        "propertyName": "Beautiful Townhouse...",
-        "price": "75861",
-        "address": "House 62, Road 2"
-      }
-    }
-  }
-}
-```
 
 ### 4. Webhook (Stripe)
 

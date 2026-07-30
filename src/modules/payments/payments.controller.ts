@@ -44,19 +44,6 @@ const getPaymentHistory = catchAsync(async (req: Request, res: Response, next: N
     });
 });
 
-const getPaymentDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const paymentId = req.params.id as string;
-    const userId = req.user?.userId as string;
-
-    const result = await paymentsService.getPaymentDetails(userId, paymentId);
-
-    sendResponse(res, {
-        success: true,
-        statusCode: 200,
-        message: "Payment details fetched successfully",
-        data: result,
-    });
-});
 
 const stripeWebhook = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const signature = req.headers['stripe-signature'] as string;
@@ -71,6 +58,6 @@ export const paymentsController = {
     createPayment,
     confirmPayment,
     getPaymentHistory,
-    getPaymentDetails,
+
     stripeWebhook
 };

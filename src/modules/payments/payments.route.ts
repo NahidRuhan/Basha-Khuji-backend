@@ -8,6 +8,6 @@ const router = express.Router();
 router.post("/create", auth(UserRole.TENANT), paymentsController.createPayment);
 router.post("/confirm", auth(UserRole.TENANT), paymentsController.confirmPayment);
 router.get("/", auth(UserRole.TENANT), paymentsController.getPaymentHistory);
-router.get("/:id", auth(UserRole.TENANT), paymentsController.getPaymentDetails);
+
 
 export const paymentsRoute = router;

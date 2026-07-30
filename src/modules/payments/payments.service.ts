@@ -140,28 +140,6 @@ const getPaymentHistory = async (userId: string) => {
     });
 };
 
-const getPaymentDetails = async (userId: string, paymentId: string) => {
-    const payment = await prisma.payments.findUnique({
-        where: { paymentId },
-        include: {
-            rentalRequest: {
-                include: {
-                    property: true
-                }
-            }
-        }
-    });
-
-    if (!payment) {
-        throw new Error("Payment not found");
-    }
-
-    if (payment.rentalRequest.userId !== userId) {
-        throw new Error("Unauthorized");
-    }
-
-    return payment;
-};
 
 const handleStripeWebhook = async (rawBody: Buffer, signature: string) => {
     let event: Stripe.Event;
@@ -221,6 +199,6 @@ export const paymentsService = {
     createPayment,
     confirmPayment,
     getPaymentHistory,
-    getPaymentDetails,
+
     handleStripeWebhook
 };
