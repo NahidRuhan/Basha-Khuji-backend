@@ -271,7 +271,7 @@ const updateRequest = async (requestId:string, userId:string,payLoad:{status:Ren
         );
       }
     }
-  } else if (payLoad.status === RentalRequestStatus.COMPLETED || payLoad.status === RentalRequestStatus.REJECTED) {
+  } else if (payLoad.status === RentalRequestStatus.COMPLETED || payLoad.status === RentalRequestStatus.REJECTED || payLoad.status === RentalRequestStatus.PENDING) {
     // Only mark property as available if this request was previously holding it
     if (request.status === RentalRequestStatus.APPROVED || request.status === RentalRequestStatus.ACTIVE) {
       transactionOperations.push(
