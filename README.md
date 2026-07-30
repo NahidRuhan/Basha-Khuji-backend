@@ -114,7 +114,6 @@ Below is a summary of the available endpoints. For full documentation including 
 | `POST` | `/api/payments/create` | Create a Stripe checkout session |
 | `POST` | `/api/payments/confirm` | Confirm payment success after Stripe checkout |
 | `GET`  | `/api/payments` | Get user's payment history |
-| `GET`  | `/api/payments/:id` | Get payment details |
 | `POST` | `/api/payments/webhook` | Stripe webhook for payment confirmation |
 
 ### 🛡️ Admin Features

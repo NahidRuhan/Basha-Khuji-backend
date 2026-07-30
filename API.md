@@ -1183,6 +1183,34 @@ Authorization: Bearer <accessToken>
 - **500 Internal Server Error**: Rental request not found / must be APPROVED
 - **500 Internal Server Error**: Payment already completed
 
+### 2. Confirm Payment
+
+- **Endpoint**: `/api/payments/confirm`
+- **Method**: `POST`
+- **Description**: Confirms the success of a payment after Stripe checkout session completes.
+- **Headers**:
+  - `Authorization`: `Bearer <accessToken>`
+
+**Request Body:**
+
+```json
+{
+  "sessionId": "cs_test_..."
+}
+```
+
+**Success Response:**
+
+- **Code:** `200 OK`
+- **Content:**
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Payment confirmed successfully"
+}
+```
 
 ### 3. Get Payment History
 
